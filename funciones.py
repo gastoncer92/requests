@@ -68,24 +68,18 @@ def extraer_correo2(url, direccionamiento=[], excluir=[]):
 
 
 def extraer(url, excluir, patron):
-    #registro:list -donde iran los correos filtrados
-    registro = []
-
+    registroReverso = []
     respuesta = requests.get(url)
     if existeUrl(url):
         extracto = re.findall(patron, respuesta.text)
         for index, i in enumerate(extracto):
             for exc in excluir:
                 if exc in i:
-                    pass
-                    # print("{} tiene {}".format(i, exc))
+                    registroReverso.append(i)
                 else:
-                    # print("{} no tiene {}".format(i, exc))
-                    registro.append(i)
-        # print('---------')
-        # print(registro)
-        # print('---------')
-        return registro
+                    pass
+        res = [i for i in extracto if i not in registroReverso]
+        return res
     else:
         return None
 
@@ -153,5 +147,3 @@ def ListaDeCorreos(urls=[''], direccionamiento=[''], excluir=[''], patron=r'[a-z
 
             ## retorno todas las urls preparadas
             return todasLasUrl
-
-
