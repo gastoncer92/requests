@@ -89,13 +89,12 @@ def extraer_correo3(url, direccionamiento=[], excluir=[]):
             else:
                 print("presenta error")
 
+
 def existeUrl(url):
     if '200' in str(requests.get(url)):
         return True
     else:
         return False
-
-
 
 
 def ListaDeCorreos(urls=[''], direccionamiento=[''], excluir=[''], patron=r'[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}'):
@@ -108,16 +107,22 @@ def ListaDeCorreos(urls=[''], direccionamiento=[''], excluir=[''], patron=r'[a-z
     :param patron: str
     :return: list
     """
-    correos=[]
+    correos = []
     # ver si direccionamiento y exluir tienen contenido
     if direccionamiento != [''] and excluir != ['']:
         ## tienen ambos contenido
-        todasLasUrl=[]
+
+        ## prepraro una lista vacia en la que iran todos los correos
+        todasLasUrl = []
+
+        ## meto en la lista todasLasUrl las url originales
+        for i in urls:
+            todasLasUrl.append(i)
         ## reorro las direcciones para agregarla a las urls administradas
         for t in direccionamiento:
             ## recorro las url y les agrego nuevas url con las direcciones extras
             for i in urls:
-                todasLasUrl.append(i+'/'+t)
+                todasLasUrl.append(i + '/' + t)
         print(todasLasUrl)
     else:
         pass
@@ -142,21 +147,9 @@ def ListaDeCorreos(urls=[''], direccionamiento=[''], excluir=[''], patron=r'[a-z
                 pass
 """
 
-
-
-
-
-
-
-
-
-
-
         ## agrego a la url la direccion
-            ## determino si en la url esta adentro algunas de las excepciones
-            ## si es verdadero no hago nada, si es falso lo agrego a una lista nueva
-
-
+        ## determino si en la url esta adentro algunas de las excepciones
+        ## si es verdadero no hago nada, si es falso lo agrego a una lista nueva
 
         # for i in urls:
         #     respuesta = hay_direccionamiento_y_excluir(i, direccionamiento, excluir, patron)
