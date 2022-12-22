@@ -1,97 +1,81 @@
-import re
-import requests
+from PyQt5.QtWidgets import QApplication
 
-url4 = 'https://www.vinosylicores.co.uk'  # /contact
-patron1 = r'[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}'
-
-
-# bueno
-def extraer_correo(url, direccionamiento='', excluir=[]):
-    registro = []
-    if direccionamiento == '':
-        respuesta = requests.get(url)
-    else:
-        respuesta = requests.get(url + '\\' + direccionamiento)
-    if '200' in str(respuesta):
-        print("es correcto")
-        extracto = re.findall(patron1, respuesta.text)
-        print(extracto)
-        for index, i in enumerate(extracto):
-            for exc in excluir:
-                if exc in i:
-                    print("{} tiene {}".format(i, exc))
-                else:
-                    print("{} no tiene {}".format(i, exc))
-                    registro.append(i)
-        print(registro)
-    else:
-        print("presenta error")
+from gui import *
+from funciones import *
 
 
+class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
+
+    def __init__(self):
+        QtWidgets.QMainWindow.__init__(self)
+        self.setupUi(self)
+        # self.pushButton.clicked.connect(self.extraer)
+        self.pushButton.clicked.connect(self.extraer2)
+        self.plainTextEdit.setPlainText('https://www.vinosylicores.co.uk')
+        self.lineEdit_2.setText("contact")  # direccionamiento
+        self.lineEdit.setText(".wix")
+
+    def extraer2(self):
+        # limpiar plainTextEdit_2
+        self.plainTextEdit_2.clear()
+
+        # preparar listas de urls
+        urls = self.plainTextEdit.toPlainText().strip().replace('\n', ',').split(',')
+        # preparar listas de exluir y direcciones
+        excluir = self.lineEdit.text().strip().split(',')
+        # preparar listas de direcciones
+        direccionamiento = self.lineEdit_2.text().strip().split(',')
+
+        # preparo variable de la lista de correos en str
+        textoPlanoCorreo = ""
+        # preparo variable de la cantidad de correos para statusbar
+        cantidad_de_correos = 0
+
+        # determino patros para filtrar los correos
+        patron = r'[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}'
+
+        # lista de correos
+        correos = ListaDeCorreos(urls, direccionamiento, excluir, patron)
+
+        # for i in correos:
+##            resultado = extraer_correo4(i, direccionamiento, excluir)
+            # cantidad_de_correos += len(correos)
+            # for j in correos:
+            #     textoPlanoCorreo = textoPlanoCorreo + j + ','
+        # self.plainTextEdit_2.setPlainText(textoPlanoCorreo)
+        # self.statusbar.showMessage('un total de {} correos encontrados'.format(cantidad_de_correos), 5000)
+    # def extraer(self):
+    #     # limpiar plainTextEdit_2
+    #     self.plainTextEdit_2.clear()
+    #
+    #     # preparar listas de urls
+    #     urls = self.plainTextEdit.toPlainText().strip().replace('\n', ',').split(',')
+    #     # preparar listas de exluir y direcciones
+    #     excluir = self.lineEdit.text().strip().split(',')
+    #     # preparar listas de direcciones
+    #     direccionamiento = self.lineEdit_2.text().strip().split(',')
+    #
+    #     # preparo variable de la lista de correos en str
+    #     textoPlanoCorreo = ""
+    #     # preparo variable de la cantidad de correos para statusbar
+    #     cantidad_de_correos = 0
+    #
+    #     # determino patros para filtrar los correos
+    #     patron = r'[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}'
+    #
+    #     # lista de correos
+    #     correos = ListaDeCorreos(urls, direccionamiento, excluir, patron)
+    #
+    #     for i in correos:
+    #         # resultado = extraer_correo4(i, direccionamiento, excluir)
+    #         cantidad_de_correos += len(correos)
+    #         for j in correos:
+    #             textoPlanoCorreo = textoPlanoCorreo + j + ','
+    #     self.plainTextEdit_2.setPlainText(textoPlanoCorreo)
+    #     self.statusbar.showMessage('un total de {} correos encontrados'.format(cantidad_de_correos), 5000)
 
 
-
-def extraer_correo2(url, direccionamiento=[], excluir=[]):
-    registro = []
-    for j in direccionamiento:
-        if j == '':
-            respuesta = requests.get(url)
-        else:
-            print(url + '/' + j)
-            respuesta = requests.get(url + '/' + j)
-        if '200' in str(respuesta):
-            print("es correcto")
-            extracto = re.findall(patron1, respuesta.text)
-            print(extracto)
-            for index, i in enumerate(extracto):
-                if excluir==['']:
-                    registro.append(i)
-                    print('gggg')
-                else:
-                    print('----------------')
-                    print('----------------')
-                    print(excluir)
-                    print('----------------')
-                    print('----------------')
-                    for exc in excluir:
-                        if exc in i:
-                            print("{} tiene {}".format(i, exc))
-                            print('no lo tengo que guardar')
-                        else:
-                            print("{} no tiene {}".format(i, exc))
-                            print('lo tengo que guardar')
-                            print(i)
-                            registro.append(i)
-            print(registro)
-            return registro
-
-        else:
-            print("presenta error")
-
-
-
-def extraer_correo3(url, direccionamiento=[], excluir=[]):
-    registro = []
-    if direccionamiento == '':
-        respuesta = requests.get(url)
-    else:
-        for j in direccionamiento:
-            respuesta = requests.get(url + '\\' + j)
-            if '200' in str(respuesta):
-                print("es correcto")
-                extracto = re.findall(patron1, respuesta.text)
-                print(extracto)
-                for index, i in enumerate(extracto):
-                    for exc in excluir:
-                        if exc in i:
-                            print("{} tiene {}".format(i, exc))
-                        else:
-                            print("{} no tiene {}".format(i, exc))
-                            registro.append(i)
-                print(registro)
-            else:
-                print("presenta error")
-
-
-# extraer_correo(url4, excluir=["wix"])
-# extraer_correo(url4, excluir=['wix'])
+app = QApplication([])
+gui = MainWindow()
+gui.show()
+app.exec_()
