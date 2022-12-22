@@ -44,12 +44,24 @@ def extraer_correo2(url, direccionamiento=[], excluir=[]):
             extracto = re.findall(patron1, respuesta.text)
             print(extracto)
             for index, i in enumerate(extracto):
-                for exc in excluir:
-                    if exc in i:
-                        print("{} tiene {}".format(i, exc))
-                    else:
-                        print("{} no tiene {}".format(i, exc))
-                        registro.append(i)
+                if excluir==['']:
+                    registro.append(i)
+                    print('gggg')
+                else:
+                    print('----------------')
+                    print('----------------')
+                    print(excluir)
+                    print('----------------')
+                    print('----------------')
+                    for exc in excluir:
+                        if exc in i:
+                            print("{} tiene {}".format(i, exc))
+                            print('no lo tengo que guardar')
+                        else:
+                            print("{} no tiene {}".format(i, exc))
+                            print('lo tengo que guardar')
+                            print(i)
+                            registro.append(i)
             print(registro)
             return registro
 
